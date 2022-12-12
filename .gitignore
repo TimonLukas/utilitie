@@ -34,3 +34,6 @@ coverage
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+auto-imports.d.ts
+components.d.ts

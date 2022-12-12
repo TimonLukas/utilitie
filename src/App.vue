@@ -1,91 +1,103 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router"
-import HelloWorld from "./components/HelloWorld.vue"
-</script>
-
-<template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+<template lang="pug">
+.app-container
+  nav
+    el-menu(default-active="landing" router)
+      h1 utili👔
+      el-menu-item(
+        v-for="(route, label) in routes"
+        :key="label"
+        :index="route.name"
+        :route="route"
+      ) {{ label }}
+      .nav-bottom
+        .centered
+          el-switch.toggle-dark-mode(
+            v-model="isDarkModeEnabled"
+            :active-icon="IconMoon"
+            :inactive-icon="IconSun"
+          )
+  main: router-view
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script lang="ts" setup>
+import { useDark } from "@vueuse/core"
+import { routes } from "@/router/routes"
+
+import IconMoon from "~icons/heroicons-outline/moon"
+import IconSun from "~icons/heroicons-outline/sun"
+
+const isDarkModeEnabled = useDark({ initialValue: "dark" })
+</script>
+
+<style lang="less">
+body {
+  margin: 0;
+  font-family: system-ui, ui-sans-serif, sans-serif;
+  font-size: 16px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+
+  > main {
+    flex: 1;
+  }
 }
 
 nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+  height: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  user-select: none;
+  position: relative;
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  > ul.el-menu {
+    height: 100%;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  h1 {
+    text-align: center;
+    margin-top: 0;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+  .nav-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+    .centered {
+      text-align: center;
+      width: 100%;
+    }
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+    .toggle-dark-mode {
+      .el-icon {
+        transform: scale(1.25) translateY(-1px);
+      }
+
+      > .el-switch__label--left {
+        color: white;
+        .el-icon {
+          filter: drop-shadow(0 0 3px black);
+        }
+      }
+
+      > .el-switch__label--right {
+        color: black;
+        .el-icon {
+          filter: drop-shadow(0 0 4px white);
+        }
+      }
+    }
   }
 }
 </style>
